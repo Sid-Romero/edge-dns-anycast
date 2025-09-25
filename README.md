@@ -1,6 +1,5 @@
 # edge-dns-anycast
 
-
 Service d’annuaire Internet (DNS) **opéré comme un service réseau** : une **même IP** servie depuis **plusieurs lieux** (anycast), **chiffrée** (DoH/DoT), **résiliente** aux pannes/attaques, **observable** et **déployée** de façon reproductible.
 
 ## But du projet
@@ -16,11 +15,11 @@ Service d’annuaire Internet (DNS) **opéré comme un service réseau** : une *
 - Une **exploitation** mesurable (latence, erreurs, QPS, état des sessions) et **industrialisée** (CI/CD de configs).
 
 ## Hors périmètre
-- Matériel anti-DDoS opérateur (scrubbing center).  
-- Anycast public BGP “Internet” complet (démonstration en lab/overlay suffisante).  
+- Matériel anti-DDoS opérateur (scrubbing center).
+- Anycast public BGP “Internet” complet (démonstration en lab/overlay suffisante).
 - Portail applicatif non-DNS.
 
 ## Pourquoi ce nom : `edge-dns-anycast`
-- **edge** : le service vit **au bord du réseau** (PoP/edge), au plus près des clients.  
-- **dns** : c’est un **annuaire nom → adresse** (résolveur + autoritatif).  
+- **edge** : le service vit **au bord du réseau** (PoP/edge), au plus près des clients.
+- **dns** : c’est un **annuaire nom → adresse** (résolveur + autoritatif).
 - **anycast** : **une IP unique, plusieurs sites** qui la servent, avec bascule automatique.

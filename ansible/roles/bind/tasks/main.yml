@@ -1,0 +1,26 @@
+---
+- name: Creating Docker Network for the PoPs
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+    ipam_config:
+      - subnet: "{{ docker_subnet }}"
+
+
+- name: Starting recursive Bind Container
+  community.docker.docker_container:
+    name: "{{ bind_container_name }}"
+    image: "{{ bind_image }}"
+    state: started
+    restart_policy: always
+    networks:
+      - name: "{{ docker_network }}"
+        ipv4_address: "{{ bind_ip }}"
+      - name: bridge
+    published_ports:
+      - "5300:53/udp"
+      - "5300:53/tcp"
+    volumes:
+      - "{{ playbook_dir }}/../../services/bind/named.conf:/etc/bind/named.conf:ro"
+      - "{{ playbook_dir }}/../../services/bind/named.options:/etc/bind/named.options:ro"
+      - "{{ playbook_dir }}/../../services/bind/root.hints:/etc/bind/root.hints:ro"
+  notify: Restart bind container

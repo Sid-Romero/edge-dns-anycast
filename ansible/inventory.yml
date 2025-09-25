@@ -1,0 +1,4 @@
+all:
+  hosts:
+    pop_paris:
+      ansible_connection: local
