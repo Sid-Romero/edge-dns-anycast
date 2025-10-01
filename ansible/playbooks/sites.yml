@@ -2,3 +2,4 @@
   gather_facts: false
   roles:
     - {role: ../roles/bind}
+    - {role: ../roles/dnsdist}

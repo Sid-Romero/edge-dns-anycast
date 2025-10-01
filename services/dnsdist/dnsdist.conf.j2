@@ -1,0 +1,9 @@
+-- Full autorization. Absolutely dangerous but as we are in a lab project, it wont matter
+setACL({"0.0.0.0/0", "::/0"})
+
+newServer{address="{{ bind_ip }}:53", name="bind-rec"}
+
+addLocal("0.0.0.0:5301")
+
+-- Debug mode for the container logs
+setVerbose(true)

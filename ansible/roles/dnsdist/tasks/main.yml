@@ -1,0 +1,43 @@
+---
+- name: Ensure certs dir exists (host)
+  ansible.builtin.file:
+    path: "{{ dnsdist_cert_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Generate self-signed key/cert if missing (host)
+  ansible.builtin.command: >
+    openssl req -x509 -nodes -newkey rsa:2048
+    -subj "/CN=localhost"
+    -keyout "{{ dnsdist_cert_dir }}/dnsdist.key"
+    -out "{{ dnsdist_cert_dir }}/dnsdist.crt"
+    -days 365
+  args:
+    creates: "{{ dnsdist_cert_dir }}/dnsdist.crt"
+
+- name: Render dnsdist.conf from template
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../../services/dnsdist/dnsdist.conf.j2"
+    dest: "{{ playbook_dir }}/../../services/dnsdist/dnsdist.conf"
+
+- name: Run dnsdist container
+  community.docker.docker_container:
+    name: "{{ dnsdist_container_name }}"
+    image: "{{ dnsdist_image }}"
+    state: started
+    restart_policy: always
+    command: ["dnsdist", "-C", "/etc/dnsdist/dnsdist.conf", "--supervised"]
+    entrypoint: []
+    networks:
+      - name: "{{ docker_network }}"
+        ipv4_address: "{{ dnsdist_ip }}"
+      - name: bridge
+    published_ports:
+      - "853:853/tcp"
+      - "443:443/tcp"
+      - "5301:5301/tcp"
+      - "5301:5301/udp"
+    volumes:
+      - "{{ dnsdist_conf }}:/etc/dnsdist/dnsdist.conf:ro"
+      - "{{ dnsdist_cert_dir }}:/certs:ro"
+  notify: Restart dnsdist

@@ -1,0 +1,5 @@
+---
+- name: Restart dnsdist
+  community.docker.docker_container:
+    name: "{{ dnsdist_container_name }}"
+    restart: true
