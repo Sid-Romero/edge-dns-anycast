@@ -1,0 +1,6 @@
+---
+- name: Ensure IXP docker network exists
+  community.docker.docker_network:
+    name: "{{ ixp_net_name }}"
+    ipam_config:
+      - subnet: "{{ ixp_net_subnet }}"

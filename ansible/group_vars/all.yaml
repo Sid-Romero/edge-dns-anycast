@@ -10,3 +10,12 @@ dnsdist_container_name: "dnsdist-front"
 dnsdist_ip: "172.20.0.12"
 dnsdist_cert_dir: "{{ playbook_dir }}/../../services/dnsdist/certs"
 dnsdist_conf: "{{ playbook_dir }}/../../services/dnsdist/dnsdist.conf"
+
+frr_image: "frrouting/frr:v8.4.1"
+
+ixp_net_name: "ixp_net"
+ixp_net_subnet: "172.31.0.0/24"
+
+frr_rs_name: "frr-rs"
+frr_rs_ip: "172.31.0.10"
+frr_rs_asn: 65000

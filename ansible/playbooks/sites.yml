@@ -3,3 +3,4 @@
   roles:
     - {role: ../roles/bind}
     - {role: ../roles/dnsdist}
+    - {role: ../roles/frr}
