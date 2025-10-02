@@ -5,13 +5,14 @@
     state: directory
     mode: "0755"
 
-- name: Generate self-signed key/cert if missing (host)
+- name: Generate self-signed key/cert with SAN if missing (host)
   ansible.builtin.command: >
     openssl req -x509 -nodes -newkey rsa:2048
-    -subj "/CN=localhost"
     -keyout "{{ dnsdist_cert_dir }}/dnsdist.key"
     -out "{{ dnsdist_cert_dir }}/dnsdist.crt"
     -days 365
+    -subj "/CN=localhost"
+    -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
   args:
     creates: "{{ dnsdist_cert_dir }}/dnsdist.crt"
 
