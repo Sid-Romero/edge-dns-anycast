@@ -1,4 +1,4 @@
-frr version 9
+frr version 8.4
 frr defaults traditional
 service integrated-vtysh-config
 !
@@ -7,8 +7,10 @@ log stdout
 !
 router bgp {{ frr_rs_asn }}
  bgp router-id {{ frr_rs_ip }}
+ neighbor {{ pop_paris_ip }} remote-as {{ pop_paris_asn }}
  !
  address-family ipv4 unicast
+  neighbor {{ pop_paris_ip }} activate
   exit-address-family
 !
 line vty

@@ -11,7 +11,6 @@ dnsdist_ip: "172.20.0.12"
 dnsdist_cert_dir: "{{ playbook_dir }}/../../services/dnsdist/certs"
 dnsdist_conf: "{{ playbook_dir }}/../../services/dnsdist/dnsdist.conf"
 
-
 # Route server (FRR)
 frr_image: "frrouting/frr:v8.4.1"
 
@@ -23,5 +22,6 @@ frr_rs_ip: "172.31.0.10"
 frr_rs_asn: 65000
 
 # Paris PoP
+pop_paris_name: "frr-pop-paris"
 pop_paris_ip: "172.31.0.11"
 pop_paris_asn: 65001

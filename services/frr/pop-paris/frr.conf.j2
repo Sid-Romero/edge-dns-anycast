@@ -1,0 +1,17 @@
+frr version 8.4
+frr defaults traditional
+service integrated-vtysh-config
+!
+hostname frr-pop-paris
+log stdout
+!
+router bgp {{ pop_paris_asn }}
+ bgp router-id {{ pop_paris_ip }}
+ neighbor {{ frr_rs_ip }} remote-as {{ frr_rs_asn }}
+ !
+ address-family ipv4 unicast
+  neighbor {{ frr_rs_ip }} activate
+  exit-address-family
+!
+line vty
+!

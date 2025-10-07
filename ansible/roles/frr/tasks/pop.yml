@@ -1,0 +1,23 @@
+---
+- name: Render FRR config for Paris PoP
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../../services/frr/pop-paris/frr.conf.j2"
+    dest: "{{ playbook_dir }}/../../services/frr/pop-paris/frr.conf"
+
+- name: Run FRR container for Paris PoP
+  community.docker.docker_container:
+    name: "{{ pop_paris_name }}"
+    image: "{{ frr_image }}"
+    state: started
+    restart_policy: always
+    capabilities:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    networks:
+      - name: "{{ ixp_net_name }}"
+        ipv4_address: "{{ pop_paris_ip }}"
+    volumes:
+      - "{{ playbook_dir }}/../../services/frr/pop-paris/frr.conf:/etc/frr/frr.conf:ro"
+      - "{{ playbook_dir }}/../../services/frr/route-server/daemons:/etc/frr/daemons:ro"
+      - "{{ playbook_dir }}/../../services/frr/route-server/vtysh.conf:/etc/frr/vtysh.conf:ro"
