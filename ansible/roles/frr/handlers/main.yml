@@ -1,0 +1,5 @@
+---
+- name: Restart frr
+  community.docker.docker_container:
+    name: "{{ frr_rs_name }}"
+    restart: true

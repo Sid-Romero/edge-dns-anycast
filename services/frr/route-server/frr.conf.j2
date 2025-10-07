@@ -5,8 +5,8 @@ service integrated-vtysh-config
 hostname frr-rs
 log stdout
 !
-router bgp 65000
- bgp router-id 172.31.0.10
+router bgp {{ frr_rs_asn }}
+ bgp router-id {{ frr_rs_ip }}
  !
  address-family ipv4 unicast
   exit-address-family

@@ -1,11 +1,25 @@
 ---
+- name: Ensure FRR config dir exists
+  ansible.builtin.file:
+    path: "{{ playbook_dir }}/../../services/frr/route-server"
+    state: directory
+    mode: "0755"
+
+- name: Render FRR config
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../../services/frr/route-server/frr.conf.j2"
+    dest: "{{ playbook_dir }}/../../services/frr/route-server/frr.conf"
+
 - name: Run FRR route-server
   community.docker.docker_container:
     name: "{{ frr_rs_name }}"
     image: "{{ frr_image }}"
     state: started
     restart_policy: always
-    capabilities: ["NET_ADMIN"]
+    capabilities:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
     sysctls:
       net.ipv4.ip_forward: "1"
     networks:
@@ -13,3 +27,6 @@
         ipv4_address: "{{ frr_rs_ip }}"
     volumes:
       - "{{ playbook_dir }}/../../services/frr/route-server/frr.conf:/etc/frr/frr.conf:ro"
+      - "{{ playbook_dir }}/../../services/frr/route-server/daemons:/etc/frr/daemons:ro"
+      - "{{ playbook_dir }}/../../services/frr/route-server/vtysh.conf:/etc/frr/vtysh.conf:ro"
+  notify: Restart frr
